@@ -70,5 +70,18 @@ namespace SnakeOOP
                 return false;
             }
         }
+        public bool IsHitTail()
+        {
+            Point head = pointList.Last();
+            for(int i = 0; i < pointList.Count - 2; i++)
+            {
+                if (head.IsHit(pointList[i]))
+                {
+                    return true;
+                }
+                
+            }
+            return false;
+        }
     }
 }

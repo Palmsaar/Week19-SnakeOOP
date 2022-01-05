@@ -8,35 +8,32 @@ namespace SnakeOOP
     {
         static void Main(string[] args)
         {
-            Point p1 = new Point(10, 10, '*');
-            Point p2 = new Point(11, 10, '*');
-
-            HorizantalLine hLine = new HorizantalLine(10, 14, 5, '#');
-            VerticalLine vLine = new VerticalLine(6, 16, 14, '#');
-            //hLine.Draw();
-            //vLine.Draw();
-
-            HorizantalLine top = new HorizantalLine(0, 80, 0, '#');
-            VerticalLine left = new VerticalLine(0, 25, 0, '#');
-            HorizantalLine bottom = new HorizantalLine(0, 80, 25, '#');
-            VerticalLine right = new VerticalLine(0, 25, 80, '#');
-            right.Draw();
-            bottom.Draw();
-            left.Draw();
-            top.Draw();
-
+            int score = 0;
+            Walls walls = new Walls(80, 25);
+            walls.Draw();
             Point snakeTail = new Point(15, 15, 's');
             Snake snake = new Snake(snakeTail, 3, Direction.RIGHT);
             snake.Draw();
 
             FoodGenerator foodGenerator = new FoodGenerator(80, 25, '@');
             Point food = foodGenerator.GeneratorFood();
+            food.Draw();
 
             while (true)
             {
+                if (walls.IsHit(snake) || snake.IsHitTail())
+                {
+                    break;
+                }
                 if (snake.Eat(food))
                 {
-
+                    food = foodGenerator.GeneratorFood();
+                    food.Draw();
+                    score++;
+                }
+                else
+                {
+                    snake.Move();
                 }
                 if (Console.KeyAvailable)
                 {
@@ -45,11 +42,29 @@ namespace SnakeOOP
                 }
 
                 Thread.Sleep(300);
-                //snake.Move();
 
             }
+            string str_score = Convert.ToString(score);
+            WriteGameOver(str_score);
 
             Console.ReadLine();
+        }
+        public static void WriteGameOver(string score)
+        {
+            int xOffset = 25;
+            int yOffset = 8;
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.SetCursorPosition(xOffset, yOffset++);
+            WriteText("======================", xOffset, yOffset++);
+            WriteText("===== GAME  OVER =====", xOffset, yOffset++);
+            WriteText("======================", xOffset, yOffset++);
+            WriteText($"=== YOUR SCORE : {score} ===", xOffset, yOffset++);
+            WriteText("======================", xOffset, yOffset++);
+        }
+        public static void WriteText(string text, int xOffset, int yOffset)
+        {
+            Console.SetCursorPosition(xOffset, yOffset);
+            Console.WriteLine(text);
         }
     }
 }
