@@ -9,6 +9,7 @@ namespace SnakeOOP
         static void Main(string[] args)
         {
             int score = 0;
+            int speed = 200;
             Walls walls = new Walls(80, 25);
             walls.Draw();
             Point snakeTail = new Point(15, 15, 's');
@@ -16,7 +17,12 @@ namespace SnakeOOP
             snake.Draw();
 
             FoodGenerator foodGenerator = new FoodGenerator(80, 25, '@');
+            FoodGenerator foodGenerator2 = new FoodGenerator(80, 25, '@');
             Point food = foodGenerator.GeneratorFood();
+            Point foodBad = foodGenerator2.GeneratorFoodBad();
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            foodBad.Draw();
+            Console.ForegroundColor = ConsoleColor.White;
             food.Draw();
 
             while (true)
@@ -30,10 +36,22 @@ namespace SnakeOOP
                     food = foodGenerator.GeneratorFood();
                     food.Draw();
                     score++;
+                    speed = speed - 7;
+                    WriteScore(score);
                 }
                 else
                 {
                     snake.Move();
+                }
+                if (snake.EatBad(foodBad))
+                {
+                    foodBad = foodGenerator2.GeneratorFoodBad();
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    foodBad.Draw();
+                    Console.ForegroundColor = ConsoleColor.White;
+                    score--;
+                    speed = speed + 7;
+                    WriteScore(score);
                 }
                 if (Console.KeyAvailable)
                 {
@@ -41,7 +59,7 @@ namespace SnakeOOP
                     snake.HandleKeys(key.Key);
                 }
 
-                Thread.Sleep(300);
+                Thread.Sleep(speed);
 
             }
             string str_score = Convert.ToString(score);
@@ -65,6 +83,11 @@ namespace SnakeOOP
         {
             Console.SetCursorPosition(xOffset, yOffset);
             Console.WriteLine(text);
+        }
+        public static void WriteScore(int score)
+        {
+            Console.SetCursorPosition(100, 13);
+            Console.WriteLine($"SCORE : {score}");
         }
     }
 }

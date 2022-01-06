@@ -17,7 +17,7 @@ namespace SnakeOOP
             VerticalLine left = new VerticalLine(0, 25, 0, '#');
             HorizantalLine bottom = new HorizantalLine(0, 80, 25, '#');
             VerticalLine right = new VerticalLine(0, 25, 80, '#');
-
+            HorizantalLine obstacle2 = new HorizantalLine(13, 18, 8, '#');
             VerticalLine obstacle = new VerticalLine(10, 13, 50, '%');
 
             wallList.Add(top);
@@ -25,6 +25,7 @@ namespace SnakeOOP
             wallList.Add(right);
             wallList.Add(left);
             wallList.Add(obstacle);
+            wallList.Add(obstacle2);
 
         }
         public void Draw()

@@ -8,6 +8,8 @@ namespace SnakeOOP
 {
     class Snake : Figure
     {
+        Random rnd = new Random();
+        int score = 16;
         Direction direction;
         public Snake(Point tail, int lenght, Direction _direction)
         {
@@ -28,7 +30,29 @@ namespace SnakeOOP
 
             Point head = GetNextPoint();
             pointList.Add(head);
-            head.Draw();
+            if (score >= 5 && score < 10)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                head.Draw();
+                Console.ForegroundColor = ConsoleColor.White;
+
+            }
+            else if (score >= 10 && score < 16)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                head.Draw();
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else if (score >= 16)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                head.Draw();
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else
+            {
+                head.Draw();
+            }
         }
         public Point GetNextPoint()
         {
@@ -63,6 +87,21 @@ namespace SnakeOOP
             {
                 food.symb = head.symb;
                 pointList.Add(food);
+                score++;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool EatBad(Point foodBad)
+        {
+            Point head = GetNextPoint();
+            if (head.IsHit(foodBad))
+            {
+                foodBad.symb = head.symb;
+                score--;
                 return true;
             }
             else
